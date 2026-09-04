@@ -16,5 +16,32 @@
         "dinner": "no",
         "dinner_price": 0,
         "total": 55.0
+    },
+    {
+        "date": "04-09-2026",
+        "day": "Friday",
+        "lunch": "y",
+        "lunch_price": 0,
+        "dinner": "no",
+        "dinner_price": 0,
+        "total": 0
+    },
+    {
+        "date": "04-09-2026",
+        "day": "Friday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "no",
+        "dinner_price": 0,
+        "total": 55.0
+    },
+    {
+        "date": "04-09-2026",
+        "day": "Friday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "yes",
+        "dinner_price": 65.0,
+        "total": 120.0
     }
 ]
