@@ -1,8 +1,19 @@
+from datetime import datetime
+
 print("=" * 35)
 print("       TIFFIN EXPENSE TRACKER")
 print("=" * 35)
 
-lunch_price = float(input("Enter lunch price: ₹"))
+# Get today's date
+today = datetime.now()
+
+date = today.strftime("%d-%m-%Y")
+day = today.strftime("%A")
+
+print("\nDate :", date)
+print("Day  :", day)
+
+lunch_price = float(input("\nEnter lunch price: ₹"))
 dinner_price = float(input("Enter dinner price: ₹"))
 
 lunch = input("Did you take lunch? (yes/no): ").lower()
@@ -29,4 +40,6 @@ else:
     print("Dinner : Not Taken")
 
 print("--------------------------")
+print("Date   :", date)
+print("Day    :", day)
 print("Total  : ₹", total)
