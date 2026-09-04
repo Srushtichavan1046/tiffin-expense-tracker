@@ -1,0 +1,11 @@
+[
+    {
+        "date": "04-09-2026",
+        "day": "Friday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "yes",
+        "dinner_price": 60.0,
+        "total": 115.0
+    }
+]
