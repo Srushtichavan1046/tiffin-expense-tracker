@@ -6,7 +6,38 @@ print("=" * 35)
 print("       TIFFIN EXPENSE TRACKER")
 print("=" * 35)
 
+# -------------------------------
+# Load tiffin prices
+# -------------------------------
+
+if os.path.exists("settings.json"):
+    with open("settings.json", "r") as file:
+        settings = json.load(file)
+
+    lunch_price = settings["lunch_price"]
+    dinner_price = settings["dinner_price"]
+
+else:
+    print("\nSet your tiffin prices")
+
+    lunch_price = float(input("Enter lunch price: ₹"))
+    dinner_price = float(input("Enter dinner price: ₹"))
+
+    settings = {
+        "lunch_price": lunch_price,
+        "dinner_price": dinner_price
+    }
+
+    with open("settings.json", "w") as file:
+        json.dump(settings, file, indent=4)
+
+    print("\nPrices saved successfully!")
+
+
+# -------------------------------
 # Get today's date
+# -------------------------------
+
 today = datetime.now()
 
 date = today.strftime("%d-%m-%Y")
@@ -15,15 +46,22 @@ day = today.strftime("%A")
 print("\nDate :", date)
 print("Day  :", day)
 
-# Get tiffin prices
-lunch_price = float(input("\nEnter lunch price: ₹"))
-dinner_price = float(input("Enter dinner price: ₹"))
+print("\nLunch price :", lunch_price)
+print("Dinner price:", dinner_price)
 
-# Ask whether lunch and dinner were taken
-lunch = input("Did you take lunch? (yes/no): ").lower()
+
+# -------------------------------
+# Ask about lunch and dinner
+# -------------------------------
+
+lunch = input("\nDid you take lunch? (yes/no): ").lower()
 dinner = input("Did you take dinner? (yes/no): ").lower()
 
+
+# -------------------------------
 # Calculate total
+# -------------------------------
+
 total = 0
 
 if lunch == "yes":
@@ -32,7 +70,11 @@ if lunch == "yes":
 if dinner == "yes":
     total = total + dinner_price
 
+
+# -------------------------------
 # Create today's entry
+# -------------------------------
+
 entry = {
     "date": date,
     "day": day,
@@ -43,21 +85,32 @@ entry = {
     "total": total
 }
 
-# Check whether data.json already exists
+
+# -------------------------------
+# Load existing entries
+# -------------------------------
+
 if os.path.exists("data.json"):
     with open("data.json", "r") as file:
         data = json.load(file)
 else:
     data = []
 
-# Add today's entry
+
+# -------------------------------
+# Save today's entry
+# -------------------------------
+
 data.append(entry)
 
-# Save data
 with open("data.json", "w") as file:
     json.dump(data, file, indent=4)
 
+
+# -------------------------------
 # Display today's bill
+# -------------------------------
+
 print("\n------ Today's Bill ------")
 
 if lunch == "yes":
