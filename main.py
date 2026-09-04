@@ -165,7 +165,76 @@ def change_prices(settings):
 
     print("\nPrices updated successfully!")
 
+# ==========================================
+# Monthly Summary
+# ==========================================
 
+def monthly_summary():
+
+    print("\n------------------------------")
+    print("       MONTHLY SUMMARY")
+    print("------------------------------")
+
+    if not os.path.exists("data.json"):
+        print("No entries found.")
+        return
+
+    # Ask user for month and year
+    month = input("Enter month (MM): ")
+    year = input("Enter year (YYYY): ")
+
+    # Load saved entries
+    with open("data.json", "r") as file:
+        data = json.load(file)
+
+    lunch_days = 0
+    dinner_days = 0
+
+    lunch_total = 0
+    dinner_total = 0
+
+    # Check every saved entry
+    for entry in data:
+
+        entry_date = datetime.strptime(
+            entry["date"], "%d-%m-%Y"
+        )
+
+        if (
+            entry_date.strftime("%m") == month
+            and entry_date.strftime("%Y") == year
+        ):
+
+            if entry["lunch"] == "yes":
+                lunch_days = lunch_days + 1
+                lunch_total = lunch_total + entry["lunch_price"]
+
+            if entry["dinner"] == "yes":
+                dinner_days = dinner_days + 1
+                dinner_total = dinner_total + entry["dinner_price"]
+
+    total_tiffins = lunch_days + dinner_days
+    monthly_bill = lunch_total + dinner_total
+
+    # Display summary
+    print("\n===================================")
+    print("       MONTHLY SUMMARY")
+    print("===================================")
+
+    print("\nMonth :", month)
+    print("Year  :", year)
+
+    print("\nLunch taken  :", lunch_days, "days")
+    print("Dinner taken :", dinner_days, "days")
+
+    print("\nLunch amount :", "₹", lunch_total)
+    print("Dinner amount:", "₹", dinner_total)
+
+    print("\nTotal tiffins:", total_tiffins)
+
+    print("-----------------------------------")
+    print("MONTHLY BILL :", "₹", monthly_bill)
+    print("===================================")
 # ==========================================
 # Main Program
 # ==========================================
@@ -181,8 +250,9 @@ while True:
 
     print("\n1. Add today's entry")
     print("2. View all entries")
-    print("3. Change tiffin prices")
-    print("4. Exit")
+    print("3. Monthly summary")
+    print("4. Change tiffin prices")
+    print("5. Exit")
 
     choice = input("\nEnter your choice: ")
 
@@ -196,9 +266,13 @@ while True:
 
     elif choice == "3":
 
-        change_prices(settings)
+        monthly_summary()
 
     elif choice == "4":
+
+        change_prices(settings)
+
+    elif choice == "5":
 
         print("\nThank you for using Tiffin Expense Tracker!")
         break
