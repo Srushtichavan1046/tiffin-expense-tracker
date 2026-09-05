@@ -1,5 +1,23 @@
 [
     {
+        "date": "01-09-2026",
+        "day": "Tuesday",
+        "lunch": "no",
+        "lunch_price": 0,
+        "dinner": "yes",
+        "dinner_price": 65.0,
+        "total": 65.0
+    },
+    {
+        "date": "02-09-2026",
+        "day": "Wednesday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "yes",
+        "dinner_price": 65.0,
+        "total": 120.0
+    },
+    {
         "date": "04-09-2026",
         "day": "Friday",
         "lunch": "yes",

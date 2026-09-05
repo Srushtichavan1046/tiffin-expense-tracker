@@ -9,230 +9,516 @@
 
     <title>Tiffin Expense Tracker</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <!-- ==========================================
-             Website Heading
-        =========================================== -->
 
-        <h1>🍱 Tiffin Expense Tracker</h1>
+    <!-- ================= HEADER ================= -->
 
-        <p class="subtitle">
-            Track your daily lunch and dinner expenses
+    <header class="header">
+
+        <div class="logo">
+            🍱
+        </div>
+
+        <div>
+
+            <h1>
+                Tiffin Expense Tracker
+            </h1>
+
+            <p>
+                Simple way to track your mess & tiffin expenses
+            </p>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= ADD / UPDATE ENTRY ================= -->
+
+    <div class="card form-card">
+
+        <h2>
+            📅 Add / Update Entry
+        </h2>
+
+        <p class="card-subtitle">
+
+            Forgot a day? No problem.
+            Select any date and update it.
+
         </p>
 
 
-        <!-- ==========================================
-             Today's Entry
-        =========================================== -->
+        <form
+            action="{{ url_for('save_entry') }}"
+            method="POST"
+            id="entryForm"
+        >
 
-        <div class="card">
 
-            <h2>Today's Entry</h2>
+            <!-- DATE -->
 
-            <p>
-                📅 Today
-            </p>
+            <div class="form-group">
 
+                <label for="date">
+                    Select Date
+                </label>
 
-            <form action="/save" method="POST">
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                >
 
+            </div>
 
-                <!-- Lunch -->
 
-                <div class="meal">
 
-                    <h3>Lunch</h3>
+            <!-- MEALS -->
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="lunch"
-                            value="yes"
-                            required
-                        >
-                        Taken
-                    </label>
+            <div class="meal-container">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="lunch"
-                            value="no"
-                        >
-                        Not Taken
-                    </label>
 
-                </div>
+                <!-- LUNCH -->
 
+                <div class="meal-box">
 
-                <!-- Dinner -->
+                    <div class="meal-title">
 
-                <div class="meal">
+                        <span>
+                            🍱
+                        </span>
 
-                    <h3>Dinner</h3>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="dinner"
-                            value="yes"
-                            required
-                        >
-                        Taken
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="dinner"
-                            value="no"
-                        >
-                        Not Taken
-                    </label>
-
-                </div>
-
-
-                <!-- Save Button -->
-
-                <button type="submit">
-                    Save Today's Entry
-                </button>
-
-
-            </form>
-
-        </div>
-
-
-        <!-- ==========================================
-             Monthly Summary
-        =========================================== -->
-
-        <div class="card">
-
-            <h2>📊 Monthly Summary</h2>
-
-            <p>
-                Lunch: 0 days
-            </p>
-
-            <p>
-                Dinner: 0 days
-            </p>
-
-            <hr>
-
-            <h2>
-                Monthly Bill: ₹0
-            </h2>
-
-        </div>
-
-
-        <!-- ==========================================
-             All Entries
-        =========================================== -->
-
-        <div class="card">
-
-            <h2>📋 All Entries</h2>
-
-
-            {% if entries %}
-
-
-                {% for entry in entries %}
-
-
-                    <div class="entry">
-
-                        <p>
-                            <strong>
-                                📅 {{ entry.date }}
-                            </strong>
-                        </p>
-
-
-                        <p>
-                            Day: {{ entry.day }}
-                        </p>
-
-
-                        <p>
-
-                            Lunch:
-
-                            {% if entry.lunch == "yes" %}
-
-                                ₹{{ entry.lunch_price }}
-
-                            {% else %}
-
-                                Not Taken
-
-                            {% endif %}
-
-                        </p>
-
-
-                        <p>
-
-                            Dinner:
-
-                            {% if entry.dinner == "yes" %}
-
-                                ₹{{ entry.dinner_price }}
-
-                            {% else %}
-
-                                Not Taken
-
-                            {% endif %}
-
-                        </p>
-
-
-                        <p>
-
-                            <strong>
-                                Total: ₹{{ entry.total }}
-                            </strong>
-
-                        </p>
+                        <h3>
+                            Lunch
+                        </h3>
 
                     </div>
 
 
-                    <hr>
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="lunch"
+                            value="yes"
+                            required
+                        >
+
+                        <span>
+                            Taken
+                        </span>
+
+                    </label>
 
 
-                {% endfor %}
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="lunch"
+                            value="no"
+                        >
+
+                        <span>
+                            Not Taken
+                        </span>
+
+                    </label>
+
+                </div>
 
 
-            {% else %}
+
+                <!-- DINNER -->
+
+                <div class="meal-box">
+
+                    <div class="meal-title">
+
+                        <span>
+                            🍽️
+                        </span>
+
+                        <h3>
+                            Dinner
+                        </h3>
+
+                    </div>
 
 
-                <p>
-                    No entries found.
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="dinner"
+                            value="yes"
+                            required
+                        >
+
+                        <span>
+                            Taken
+                        </span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="dinner"
+                            value="no"
+                        >
+
+                        <span>
+                            Not Taken
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- SAVE BUTTON -->
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+
+                💾 Save / Update Entry
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================= MONTHLY SUMMARY ================= -->
+
+    <div class="card">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    📊 Monthly Summary
+                </h2>
+
+                <p class="card-subtitle">
+
+                    Select a month to see your expenses
+
                 </p>
 
+            </div>
 
-            {% endif %}
+
+            <input
+                type="month"
+                id="monthPicker"
+            >
+
+        </div>
+
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary-grid">
+
+
+            <!-- LUNCH -->
+
+            <div class="summary-box">
+
+                <span>
+                    🍱
+                </span>
+
+                <div>
+
+                    <p>
+                        Lunch
+                    </p>
+
+                    <h3 id="lunchDays">
+                        0 days
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DINNER -->
+
+            <div class="summary-box">
+
+                <span>
+                    🍽️
+                </span>
+
+                <div>
+
+                    <p>
+                        Dinner
+                    </p>
+
+                    <h3 id="dinnerDays">
+                        0 days
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL -->
+
+            <div class="summary-box">
+
+                <span>
+                    🥡
+                </span>
+
+                <div>
+
+                    <p>
+                        Total Tiffins
+                    </p>
+
+                    <h3 id="totalTiffins">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BILL -->
+
+            <div class="summary-box bill-box">
+
+                <span>
+                    💰
+                </span>
+
+                <div>
+
+                    <p>
+                        Monthly Bill
+                    </p>
+
+                    <h3 id="monthlyBill">
+                        ₹0
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- AMOUNT DETAILS -->
+
+        <div class="amount-details">
+
+
+            <div>
+
+                <span>
+                    Lunch Amount
+                </span>
+
+                <strong id="lunchAmount">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Dinner Amount
+                </span>
+
+                <strong id="dinnerAmount">
+                    ₹0
+                </strong>
+
+            </div>
 
 
         </div>
 
 
     </div>
+
+
+
+    <!-- ================= ENTRIES ================= -->
+
+    <div class="card">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    📋 Entries
+                </h2>
+
+                <p
+                    class="card-subtitle"
+                    id="entryTitle"
+                >
+
+                    All saved entries
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="entriesContainer">
+
+            <!-- JavaScript will insert entries here -->
+
+        </div>
+
+
+    </div>
+
+
+
+   <!-- ================= PRICE SETTINGS ================= -->
+
+<div class="card">
+
+    <h2>
+        ⚙️ Tiffin Price Settings
+    </h2>
+
+    <p class="card-subtitle">
+        Change lunch and dinner prices anytime.
+    </p>
+
+    <form
+        action="{{ url_for('update_settings') }}"
+        method="POST"
+        class="price-form"
+    >
+
+        <div class="price-input">
+
+            <label for="lunch_price">
+                🍱 Lunch Price
+            </label>
+
+            <div class="price-field">
+
+                <span>₹</span>
+
+                <input
+                    type="number"
+                    id="lunch_price"
+                    name="lunch_price"
+                    value="{{ settings.lunch_price }}"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="price-input">
+
+            <label for="dinner_price">
+                🍽️ Dinner Price
+            </label>
+
+            <div class="price-field">
+
+                <span>₹</span>
+
+                <input
+                    type="number"
+                    id="dinner_price"
+                    name="dinner_price"
+                    value="{{ settings.dinner_price }}"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="primary-btn"
+        >
+            💰 Update Prices
+        </button>
+
+    </form>
+
+</div>
+
+<!-- ================= PYTHON → JAVASCRIPT ================= -->
+
+<script>
+
+    const entries = {{ entries | tojson }};
+
+</script>
+
+
+<!-- JAVASCRIPT -->
+
+<script
+    src="{{ url_for('static', filename='script.js') }}">
+</script>
 
 
 </body>
