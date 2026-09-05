@@ -43,5 +43,14 @@
         "dinner": "yes",
         "dinner_price": 65.0,
         "total": 120.0
+    },
+    {
+        "date": "05-09-2026",
+        "day": "Saturday",
+        "lunch": null,
+        "lunch_price": 0,
+        "dinner": null,
+        "dinner_price": 0,
+        "total": 0
     }
 ]

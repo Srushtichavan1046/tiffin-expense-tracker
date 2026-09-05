@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tiffin Expense Tracker</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🍱 Tiffin Expense Tracker</h1>
+
+        <p class="subtitle">
+            Track your daily lunch and dinner expenses
+        </p>
+
+       <div class="card">
+
+    <h2>Today's Entry</h2>
+
+    <p>
+        📅 Today
+    </p>
+
+    <form action="/save" method="POST">
+
+        <div class="meal">
+
+            <h3>Lunch</h3>
+
+            <label>
+                <input type="radio" name="lunch" value="yes" required>
+                Taken
+            </label>
+
+            <label>
+                <input type="radio" name="lunch" value="no">
+                Not Taken
+            </label>
+
+        </div>
+
+
+        <div class="meal">
+
+            <h3>Dinner</h3>
+
+            <label>
+                <input type="radio" name="dinner" value="yes" required>
+                Taken
+            </label>
+
+            <label>
+                <input type="radio" name="dinner" value="no">
+                Not Taken
+            </label>
+
+        </div>
+
+
+        <button type="submit">
+            Save Today's Entry
+        </button>
+
+    </form>
+
+</div>
+
+            <p>
+                📅 Date: 5 September 2026
+            </p>
+
+            <div class="meal">
+
+                <h3>Lunch</h3>
+
+                <label>
+                    <input type="radio" name="lunch" value="yes">
+                    Taken
+                </label>
+
+                <label>
+                    <input type="radio" name="lunch" value="no">
+                    Not Taken
+                </label>
+
+            </div>
+
+            <div class="meal">
+
+                <h3>Dinner</h3>
+
+                <label>
+                    <input type="radio" name="dinner" value="yes">
+                    Taken
+                </label>
+
+                <label>
+                    <input type="radio" name="dinner" value="no">
+                    Not Taken
+                </label>
+
+            </div>
+
+            <button>
+                Save Today's Entry
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📊 Monthly Summary</h2>
+
+            <p>Lunch: 0 days</p>
+            <p>Dinner: 0 days</p>
+
+            <hr>
+
+            <h2>Monthly Bill: ₹0</h2>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
