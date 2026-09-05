@@ -28,8 +28,17 @@ SETTINGS_FILE = os.path.join(BASE_DIR, "settings.json")
 @app.route("/")
 def home():
 
-    return render_template("index.html")
+    # Load saved entries
+    if os.path.exists(DATA_FILE):
 
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+
+    else:
+
+        data = []
+
+    return render_template("index.html", entries=data)
 
 # ==========================================
 # Save Today's Entry
@@ -91,7 +100,7 @@ def save_entry():
     with open(DATA_FILE, "w") as file:
         json.dump(data, file, indent=4)
 
-    return "Entry saved successfully! Total: ₹" + str(total)
+    return render_template("index.html", entries=data)
 
 
 # ==========================================

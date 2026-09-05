@@ -43,3 +43,10 @@ button {
     border-radius: 6px;
     cursor: pointer;
 }
+.entry {
+    padding: 10px 0;
+}
+
+.entry p {
+    margin: 8px 0;
+}
