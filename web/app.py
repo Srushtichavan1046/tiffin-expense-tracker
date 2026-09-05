@@ -5,24 +5,26 @@ import os
 
 
 # ==========================================
-# Flask App
+# FLASK APP
 # ==========================================
 
 app = Flask(__name__)
 
 
 # ==========================================
-# File Locations
+# FILE LOCATIONS
 # ==========================================
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
 
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 SETTINGS_FILE = os.path.join(BASE_DIR, "settings.json")
 
 
 # ==========================================
-# Default Settings
+# DEFAULT PRICES
 # ==========================================
 
 DEFAULT_SETTINGS = {
@@ -32,25 +34,46 @@ DEFAULT_SETTINGS = {
 
 
 # ==========================================
-# Helper: Load Data
+# LOAD DATA
 # ==========================================
 
 def load_data():
 
-    if os.path.exists(DATA_FILE):
+    if not os.path.exists(DATA_FILE):
+        return []
 
-        try:
-            with open(DATA_FILE, "r") as file:
-                return json.load(file)
+    try:
 
-        except (json.JSONDecodeError, FileNotFoundError):
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+
+            if isinstance(data, list):
+                return data
+
             return []
 
-    return []
+    except (json.JSONDecodeError, FileNotFoundError):
+
+        return []
 
 
 # ==========================================
-# Helper: Load Settings
+# SAVE DATA
+# ==========================================
+
+def save_data(data):
+
+    with open(DATA_FILE, "w") as file:
+
+        json.dump(
+            data,
+            file,
+            indent=4
+        )
+
+
+# ==========================================
+# LOAD SETTINGS
 # ==========================================
 
 def load_settings():
@@ -58,10 +81,11 @@ def load_settings():
     if os.path.exists(SETTINGS_FILE):
 
         try:
+
             with open(SETTINGS_FILE, "r") as file:
+
                 settings = json.load(file)
 
-                # Make sure both prices exist
                 settings.setdefault(
                     "lunch_price",
                     DEFAULT_SETTINGS["lunch_price"]
@@ -75,17 +99,42 @@ def load_settings():
                 return settings
 
         except (json.JSONDecodeError, FileNotFoundError):
+
             pass
 
-    # Create default settings file
-    with open(SETTINGS_FILE, "w") as file:
-        json.dump(DEFAULT_SETTINGS, file, indent=4)
 
-    return DEFAULT_SETTINGS.copy()
+    # Create default settings
+
+    settings = DEFAULT_SETTINGS.copy()
+
+    with open(SETTINGS_FILE, "w") as file:
+
+        json.dump(
+            settings,
+            file,
+            indent=4
+        )
+
+    return settings
 
 
 # ==========================================
-# HOME PAGE
+# SAVE SETTINGS
+# ==========================================
+
+def save_settings(settings):
+
+    with open(SETTINGS_FILE, "w") as file:
+
+        json.dump(
+            settings,
+            file,
+            indent=4
+        )
+
+
+# ==========================================
+# HOME
 # ==========================================
 
 @app.route("/")
@@ -109,7 +158,7 @@ def home():
 def save_entry():
 
     # --------------------------------------
-    # Get Form Data
+    # Get form values
     # --------------------------------------
 
     selected_date = request.form.get("date")
@@ -118,23 +167,30 @@ def save_entry():
 
 
     # --------------------------------------
-    # Check Date
+    # Validate date
     # --------------------------------------
 
     if not selected_date:
+
         return "Please select a date before saving."
 
 
     # --------------------------------------
-    # Check Meals
+    # Validate meals
     # --------------------------------------
 
-    if not lunch or not dinner:
-        return "Please select Lunch and Dinner."
+    if lunch not in ["yes", "no"]:
+
+        return "Please select Lunch."
+
+
+    if dinner not in ["yes", "no"]:
+
+        return "Please select Dinner."
 
 
     # --------------------------------------
-    # Convert Date
+    # Convert date
     # --------------------------------------
 
     try:
@@ -154,30 +210,45 @@ def save_entry():
 
 
     # --------------------------------------
-    # Load Prices
+    # Load current prices
     # --------------------------------------
 
     settings = load_settings()
 
-    lunch_price = float(settings["lunch_price"])
-    dinner_price = float(settings["dinner_price"])
+    lunch_price = float(
+        settings["lunch_price"]
+    )
+
+    dinner_price = float(
+        settings["dinner_price"]
+    )
 
 
     # --------------------------------------
-    # Calculate Total
+    # Calculate prices
     # --------------------------------------
 
-    total = 0
+    actual_lunch_price = (
+        lunch_price
+        if lunch == "yes"
+        else 0
+    )
 
-    if lunch == "yes":
-        total += lunch_price
+    actual_dinner_price = (
+        dinner_price
+        if dinner == "yes"
+        else 0
+    )
 
-    if dinner == "yes":
-        total += dinner_price
+
+    total = (
+        actual_lunch_price
+        + actual_dinner_price
+    )
 
 
     # --------------------------------------
-    # Create Entry
+    # Create entry
     # --------------------------------------
 
     entry = {
@@ -188,34 +259,32 @@ def save_entry():
 
         "lunch": lunch,
 
-        "lunch_price":
-            lunch_price if lunch == "yes" else 0,
+        "lunch_price": actual_lunch_price,
 
         "dinner": dinner,
 
-        "dinner_price":
-            dinner_price if dinner == "yes" else 0,
+        "dinner_price": actual_dinner_price,
 
         "total": total
     }
 
 
     # --------------------------------------
-    # Load Existing Data
+    # Load existing entries
     # --------------------------------------
 
     data = load_data()
 
 
     # --------------------------------------
-    # Check If Date Already Exists
+    # Update existing date
     # --------------------------------------
 
     updated = False
 
-    for i in range(len(data)):
+    for i, old_entry in enumerate(data):
 
-        if data[i]["date"] == date:
+        if old_entry.get("date") == date:
 
             data[i] = entry
 
@@ -225,7 +294,7 @@ def save_entry():
 
 
     # --------------------------------------
-    # Add New Entry
+    # Add new date
     # --------------------------------------
 
     if not updated:
@@ -234,40 +303,37 @@ def save_entry():
 
 
     # --------------------------------------
-    # Sort Entries By Date
+    # Sort by date
     # --------------------------------------
 
-    data.sort(
-        key=lambda x:
-        datetime.strptime(
-            x["date"],
-            "%d-%m-%Y"
+    try:
+
+        data.sort(
+            key=lambda x: datetime.strptime(
+                x["date"],
+                "%d-%m-%Y"
+            )
         )
+
+    except (ValueError, KeyError):
+
+        pass
+
+
+    # --------------------------------------
+    # Save
+    # --------------------------------------
+
+    save_data(data)
+
+
+    return redirect(
+        url_for("home")
     )
 
 
-    # --------------------------------------
-    # Save Data
-    # --------------------------------------
-
-    with open(DATA_FILE, "w") as file:
-
-        json.dump(
-            data,
-            file,
-            indent=4
-        )
-
-
-    # --------------------------------------
-    # Return To Home
-    # --------------------------------------
-
-    return redirect(url_for("home"))
-
-
 # ==========================================
-# UPDATE PRICES
+# UPDATE TIFFIN PRICES
 # ==========================================
 
 @app.route("/update-settings", methods=["POST"])
@@ -289,16 +355,21 @@ def update_settings():
 
 
     # --------------------------------------
-    # Prevent Negative Prices
+    # Validate prices
     # --------------------------------------
 
-    if lunch_price < 0 or dinner_price < 0:
+    if lunch_price < 0:
 
-        return "Price cannot be negative."
+        return "Lunch price cannot be negative."
+
+
+    if dinner_price < 0:
+
+        return "Dinner price cannot be negative."
 
 
     # --------------------------------------
-    # Save New Settings
+    # Save new settings
     # --------------------------------------
 
     settings = {
@@ -308,17 +379,52 @@ def update_settings():
         "dinner_price": dinner_price
     }
 
+    save_settings(settings)
 
-    with open(SETTINGS_FILE, "w") as file:
 
-        json.dump(
-            settings,
-            file,
-            indent=4
+    # --------------------------------------
+    # Update existing entries
+    # --------------------------------------
+
+    data = load_data()
+
+
+    for entry in data:
+
+        if entry.get("lunch") == "yes":
+
+            entry["lunch_price"] = lunch_price
+
+        else:
+
+            entry["lunch_price"] = 0
+
+
+        if entry.get("dinner") == "yes":
+
+            entry["dinner_price"] = dinner_price
+
+        else:
+
+            entry["dinner_price"] = 0
+
+
+        entry["total"] = (
+            entry["lunch_price"]
+            + entry["dinner_price"]
         )
 
 
-    return redirect(url_for("home"))
+    # --------------------------------------
+    # Save updated entries
+    # --------------------------------------
+
+    save_data(data)
+
+
+    return redirect(
+        url_for("home")
+    )
 
 
 # ==========================================

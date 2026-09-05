@@ -1,12 +1,30 @@
 [
     {
+        "date": "04-08-2026",
+        "day": "Tuesday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "yes",
+        "dinner_price": 70.0,
+        "total": 125.0
+    },
+    {
+        "date": "19-08-2026",
+        "day": "Wednesday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "yes",
+        "dinner_price": 70.0,
+        "total": 125.0
+    },
+    {
         "date": "01-09-2026",
         "day": "Tuesday",
         "lunch": "no",
         "lunch_price": 0,
         "dinner": "yes",
-        "dinner_price": 65.0,
-        "total": 65.0
+        "dinner_price": 70.0,
+        "total": 70.0
     },
     {
         "date": "02-09-2026",
@@ -14,8 +32,8 @@
         "lunch": "yes",
         "lunch_price": 55.0,
         "dinner": "yes",
-        "dinner_price": 65.0,
-        "total": 120.0
+        "dinner_price": 70.0,
+        "total": 125.0
     },
     {
         "date": "04-09-2026",
@@ -23,8 +41,8 @@
         "lunch": "yes",
         "lunch_price": 55.0,
         "dinner": "yes",
-        "dinner_price": 60.0,
-        "total": 115.0
+        "dinner_price": 70.0,
+        "total": 125.0
     },
     {
         "date": "04-09-2026",
@@ -59,8 +77,8 @@
         "lunch": "yes",
         "lunch_price": 55.0,
         "dinner": "yes",
-        "dinner_price": 65.0,
-        "total": 120.0
+        "dinner_price": 70.0,
+        "total": 125.0
     },
     {
         "date": "05-09-2026",
@@ -110,6 +128,24 @@
     {
         "date": "05-09-2026",
         "day": "Saturday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "no",
+        "dinner_price": 0,
+        "total": 55.0
+    },
+    {
+        "date": "06-09-2026",
+        "day": "Sunday",
+        "lunch": "yes",
+        "lunch_price": 55.0,
+        "dinner": "yes",
+        "dinner_price": 70.0,
+        "total": 125.0
+    },
+    {
+        "date": "07-09-2026",
+        "day": "Monday",
         "lunch": "yes",
         "lunch_price": 55.0,
         "dinner": "no",
